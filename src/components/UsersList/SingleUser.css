@@ -1,0 +1,12 @@
+li{
+    border:1px solid grey;
+    border-radius: 7px;
+    margin :0.5rem;
+    height:10vh;
+    list-style: none;
+    font-size: large;
+    display: flex;
+    align-items: center;
+    padding-left: 1rem;
+    
+}

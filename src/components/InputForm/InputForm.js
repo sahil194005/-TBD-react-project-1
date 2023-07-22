@@ -1,33 +1,45 @@
-import { useState } from "react";
+import { useRef } from "react";
 import "./InputForm.css";
 function InputForm(props) {
-	const [userName, setUserName] = useState("");
-	const [userAge, setUserAge] = useState("");
-
-	const userNameHandler = (e) => {
-		setUserName(e.target.value);
-	};
-
-	const userAgeHandler = (e) => {
-		setUserAge(e.target.value);
-	}; 
+	const nameRef = useRef();
+	const ageRef = useRef();
+	const collegeRef = useRef();
 
 	const formSubmitHandler = (e) => {
+		let userName = nameRef.current.value;
+		let userAge = ageRef.current.value;
+		let userCollege = collegeRef.current.value;
 		e.preventDefault();
 		let obj = {
 			name: userName,
 			age: userAge,
+			college: userCollege,
 		};
-		setUserAge("");
-		setUserName("");
-		props.onSubmitHandler(obj);
+		if (userName.trim().length === 0 || userAge.trim().length === 0 || userCollege.trim().length === 0) {
+			props.onEmptySubmitHandler();
+		} else if (userAge <= 0) {
+			props.onNegativeAgeHandler();
+		} else {
+			props.onSubmitHandler(obj);
+		}
+		nameRef.current.value = "";
+		ageRef.current.value = "";
+		collegeRef.current.value = "";
 	};
 	return (
 		<form className="form-control" onSubmit={formSubmitHandler}>
-			<label>Username</label>
-			<input type="text" onChange={userNameHandler} value={userName}></input>
-			<label>Age(Years)</label>
-			<input value = {userAge} type="number" onChange={userAgeHandler}></input>
+			<div className="form-control--div">
+				<label>Username</label>
+				<input type="text" ref={nameRef}></input>
+			</div>
+			<div className="form-control--div">
+				<label>Age(Years)</label>
+				<input ref={ageRef} type="number"></input>
+			</div>
+			<div className="form-control--div">
+				<label>College Name</label>
+				<input ref={collegeRef} type="text"></input>
+			</div>
 			<button type="submit">Add User</button>
 		</form>
 	);
